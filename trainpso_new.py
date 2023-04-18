@@ -623,7 +623,7 @@ def main(opt, callbacks=Callbacks()):
                         pos[k] = max(pos[k], v[1])
                         pos[k] = min(pos[k], v[2])
                         pos[k] = round(pos[k], 5)
-                if p['fitness'] <= 0.2:
+                if p['fitness'] <= 0.13:
                     particles.remove(p)
 
             print("Dopasowanie po ", iter, "iteracji: ", best_fitness)
