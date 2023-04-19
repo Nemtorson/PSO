@@ -619,7 +619,7 @@ def main(opt, callbacks=Callbacks()):
             # Train mutation
             results = train(hyp.copy(), opt, device, callbacks)
             callbacks = Callbacks()
-            current_fitness = fitness(results)
+            current_fitness = fitness(np.array(results).reshape(1, -1))
 
             if current_fitness > best_fitness:
                 best_fitness = current_fitness
