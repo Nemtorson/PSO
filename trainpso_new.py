@@ -579,9 +579,10 @@ def main(opt, callbacks=Callbacks()):
                 'cp',
                 f'gs://{opt.bucket}/evolve.csv',
                 str(evolve_csv),])
-        
+         
     #    PSO ALGORITHM
         best_fitness = 0
+        no_improvement_count = 0
 
         for iter in range(opt.evolve):
             n_particles = 30
@@ -590,7 +591,6 @@ def main(opt, callbacks=Callbacks()):
             c2 = 1.2
             max_vel = 0.2
             particles = []
-            print(particles)
             while len(particles) < n_particles:
                 seed_value = int(time.time()) + len(particles) + iter  
                 np.random.seed(seed_value)
@@ -612,7 +612,10 @@ def main(opt, callbacks=Callbacks()):
             for p in particles:
                 if p['fitness'] > best_fitness:
                     best_fitness = p['fitness']
-                    p['best_pos'] = p['pos']  
+                    p['best_pos'] = p['pos']
+                    no_improvement_count = 0
+                else:
+                    no_improvement_count = no_improvement_count + 1  
 
                 for k in list(meta.keys())[:7]:
                     p['vel'][k] = w * p['vel'][k] + c1 * random.random() * (p['best_pos'][k] - p['pos'][k]) + c2 * random.random() * (hyp[k] - p['pos'][k])
@@ -630,17 +633,13 @@ def main(opt, callbacks=Callbacks()):
             print("Najlepsza globalna pozycja po ", iter, "iteracji: ", particles[-1]['best_pos'])           
                                            
                         
+            if no_improvement_count >= 60:
+                print(f'Fitness did not improve for {no_improvement_count} consecutive generations. Exiting evolution.')
+                break
 
 
-            # Apply constraints
 
 #End of custom part
-
-            # Train mutation
-            #results = train(hyp.copy(), opt, device, callbacks)
-            
-            # Write mutation results
-
 
         # Plot results
         plot_evolve(evolve_csv)
