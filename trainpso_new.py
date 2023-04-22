@@ -595,7 +595,7 @@ def main(opt, callbacks=Callbacks()):
                 seed_value = int(time.time()) + len(particles) + iter  
                 np.random.seed(seed_value)
                 random.seed(seed_value)
-                pos = {k: (np.random.uniform(v[1], v[2]) if i < 7 else v[0]) for i, (k, v) in enumerate(meta.items())}              
+                pos = {k: (np.random.uniform(v[1], v[2]) if i < 7 else v[0]) for i, (k, v) in enumerate(meta.items())}    #7 first hyps          
                 vel = {k: np.random.uniform(-max_vel, max_vel) for k in meta.keys()}
 
                 for k, v in meta.items():
@@ -617,7 +617,7 @@ def main(opt, callbacks=Callbacks()):
                 else:
                     no_improvement_count = no_improvement_count + 1  
 
-                for k in list(meta.keys())[:7]:
+                for k in list(meta.keys())[:7]: #7 first hyps
                     p['vel'][k] = w * p['vel'][k] + c1 * random.random() * (p['best_pos'][k] - p['pos'][k]) + c2 * random.random() * (hyp[k] - p['pos'][k])
                     p['vel'][k] = max(-max_vel, min(max_vel, p['vel'][k]))
                     p['pos'][k] = max(meta[k][1], min(meta[k][2], p['pos'][k] + p['vel'][k]))
