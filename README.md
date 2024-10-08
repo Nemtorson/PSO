@@ -1,5 +1,5 @@
 # PSO
-PSO optimization algorithm for YOLOv5
+PSO algorithm for YOLOv5
 Used command:
 
 
